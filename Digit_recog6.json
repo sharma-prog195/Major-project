@@ -1,0 +1,100 @@
+"source": [
+    "model.fit({'input':X}, {'targets': y}, n_epoch=5, \n",
+    "          validation_set=({'input':test_x},{'targets':test_y}), show_metric=True, \n",
+    "                          run_id=MODEL_NAME)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 12,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [
+    {
+     "ename": "NameError",
+     "evalue": "name 'CATEGORIES' is not defined",
+     "output_type": "error",
+     "traceback": [
+      "\u001b[1;31m---------------------------------------------------------------------------\u001b[0m",
+      "\u001b[1;31mNameError\u001b[0m                                 Traceback (most recent call last)",
+      "\u001b[1;32m<ipython-input-12-a94a6624c913>\u001b[0m in \u001b[0;36m<module>\u001b[1;34m()\u001b[0m\n\u001b[1;32m----> 1\u001b[1;33m \u001b[1;32mfor\u001b[0m \u001b[0mcategory\u001b[0m \u001b[1;32min\u001b[0m \u001b[0mCATEGORIES\u001b[0m\u001b[1;33m:\u001b[0m\u001b[1;33m\u001b[0m\u001b[0m\n\u001b[0m\u001b[0;32m      2\u001b[0m     \u001b[0mpath\u001b[0m\u001b[1;33m=\u001b[0m\u001b[0mos\u001b[0m\u001b[1;33m.\u001b[0m\u001b[0mpath\u001b[0m\u001b[1;33m.\u001b[0m\u001b[0mjoin\u001b[0m\u001b[1;33m(\u001b[0m\u001b[0mDATADIR\u001b[0m\u001b[1;33m,\u001b[0m \u001b[0mcategory\u001b[0m\u001b[1;33m)\u001b[0m  \u001b[1;31m#path to cats & dogs\u001b[0m\u001b[1;33m\u001b[0m\u001b[0m\n\u001b[0;32m      3\u001b[0m     \u001b[1;32mfor\u001b[0m \u001b[0mimg\u001b[0m \u001b[1;32min\u001b[0m \u001b[0mos\u001b[0m\u001b[1;33m.\u001b[0m\u001b[0mlistdir\u001b[0m\u001b[1;33m(\u001b[0m\u001b[0mpath\u001b[0m\u001b[1;33m)\u001b[0m\u001b[1;33m:\u001b[0m\u001b[1;33m\u001b[0m\u001b[0m\n\u001b[0;32m      4\u001b[0m         img_array=cv2.imread(os.path.join(path, img),\n\u001b[0;32m      5\u001b[0m                              cv2.IMREAD_GRAYSCALE)\n",
+      "\u001b[1;31mNameError\u001b[0m: name 'CATEGORIES' is not defined"
+     ]
+    }
+   ],
+   "source": [
+    "for category in CATEGORIES:\n",
+    "    path=os.path.join(DATADIR, category)  #path to cats & dogs\n",
+    "    for img in os.listdir(path):\n",
+    "        img_array=cv2.imread(os.path.join(path, img),\n",
+    "                             cv2.IMREAD_GRAYSCALE)\n",
+    "        plt.imshow(img_array, cmap=\"gray\")\n",
+    "        plt.show()\n",
+    "        break\n",
+    "    break"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "print(img_array)\n",
+    "print(img_array.shape)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "IMG_SIZE=50\n",
+    "\n",
+    "new_array=cv2.resize(img_array,(IMG_SIZE, IMG_SIZE))\n",
+    "plt.imshow(new_array, cmap='gray')\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "print(new_array.shape)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "training_data=[]\n",
+    "def create_training_data():\n",
+    "    for category in CATEGORIES:\n",
+    "        path=os.path.join(DATADIR, category)  #path to cats & dogs\n",
+    "        class_num=CATEGORIES.index(category)\n",
+    "        \n",
+    "        for img in os.listdir(path):\n",
+    "            try:\n",
+    "                img_array=cv2.imread(os.path.join(path, img),\n",
+    "                                 cv2.IMREAD_GRAYSCALE)\n",
+    "                new_array=cv2.resize(img_array,(IMG_SIZE, IMG_SIZE))\n",
+    "                training_data.append([new_array, class_num])\n",
+    "            except Exception as e:\n",
+    "                pass\n",
+    "create_training_data()"
+   ]
+  },
